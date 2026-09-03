@@ -1,0 +1,145 @@
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.151.106.10:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+127.0.0.1 - - [03/Sep/2026 19:58:15] "GET / HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET / HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/css/style.css HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/hero-bg.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/mehndi1.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/groom1.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/makeup1.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/hair1.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/hair2.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/makeup2.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/nails1.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/facial2.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/nails2.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/facial1.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/g1.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/g2.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/g3.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/g4.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/g5.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /static/img/g6.jpg HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:18] "GET /favicon.ico HTTP/1.1" 404 -
+10.151.106.10 - - [03/Sep/2026 20:00:25] "GET /admin HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:25] "GET /static/css/style.css HTTP/1.1" 304 -
+10.151.106.10 - - [03/Sep/2026 20:00:31] "POST /admin HTTP/1.1" 200 -
+10.151.106.10 - - [03/Sep/2026 20:00:31] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [03/Sep/2026 20:01:47] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:01:47] "GET /book HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:01:47] "GET /api/services HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:01:47] "GET / HTTP/1.1" 200 -
+ * Detected change in 'F:\\web projects\\beauty parlour\\_diag.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\_diag.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\_test_app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\_test_app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\_test_app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\_test_app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\_test_app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\_test_app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\_test_app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+ * Detected change in 'F:\\web projects\\beauty parlour\\_test_app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-929-125
+127.0.0.1 - - [03/Sep/2026 20:22:18] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:22:21] "GET /book HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:22:23] "GET /admin HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:22:26] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:26:13] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:26:28] "GET /api/services HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:26:45] "GET /admin HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:26:46] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:28:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:28:41] "GET /book HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:54] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/img/hero-bg.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/img/groom1.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/img/mehndi1.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/img/hair2.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/img/makeup1.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/img/hair1.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/img/makeup2.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/img/nails1.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/img/facial2.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/img/nails2.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/img/g1.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/img/facial1.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:55] "GET /static/img/g2.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:56] "GET /static/img/g3.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:56] "GET /static/img/g4.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:56] "GET /static/img/g5.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:29:56] "GET /static/img/g6.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:30:10] "GET /admin HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:30:10] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [03/Sep/2026 20:30:41] "POST /admin HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:30:42] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [03/Sep/2026 20:30:53] "POST /api/bookings/3/status HTTP/1.1" 302 -
+127.0.0.1 - - [03/Sep/2026 20:30:53] "GET /admin HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:30:53] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [03/Sep/2026 20:31:01] "POST /api/bookings/3/delete HTTP/1.1" 302 -
+127.0.0.1 - - [03/Sep/2026 20:31:01] "GET /admin HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:31:02] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [03/Sep/2026 20:31:06] "POST /api/bookings/2/status HTTP/1.1" 302 -
+127.0.0.1 - - [03/Sep/2026 20:31:07] "GET /admin HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:31:07] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [03/Sep/2026 20:31:12] "POST /api/bookings/2/delete HTTP/1.1" 302 -
+127.0.0.1 - - [03/Sep/2026 20:31:13] "GET /admin HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:31:13] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [03/Sep/2026 20:31:25] "POST /api/bookings/1/delete HTTP/1.1" 302 -
+127.0.0.1 - - [03/Sep/2026 20:31:25] "GET /admin HTTP/1.1" 200 -
+127.0.0.1 - - [03/Sep/2026 20:31:25] "GET /static/css/style.css HTTP/1.1" 304 -

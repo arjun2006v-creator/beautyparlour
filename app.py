@@ -2,7 +2,7 @@
 import os
 import sqlite3
 from urllib.parse import quote
-from datetime import datetime
+from datetime import datetime, date
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash, session
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -10,8 +10,26 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # (e.g. a persistent disk path on Render). Defaults to ./parlour.db
 DB_PATH = os.environ.get("DATABASE_URL", os.path.join(BASE_DIR, "parlour.db"))
 
+# Fail fast on missing secrets in production; FLASK_DEBUG=1 lets local dev use throwaway values
+DEBUG = os.environ.get("FLASK_DEBUG", "").lower() in ("1", "true", "yes")
+
+SECRET_KEY = os.environ.get("SECRET_KEY")
+if not SECRET_KEY:
+
+
+    if DEBUG:
+        SECRET_KEY = "dev-only-insecure-secret"  # local dev convenience
+    else:
+        raise RuntimeError("SECRET_KEY must be set (env var). Set FLASK_DEBUG=1 for local development only.")
+
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
+if not ADMIN_PASSWORD:
+    if DEBUG:
+        ADMIN_PASSWORD = "arjun123"  # local dev convenience
+    else:
+        raise RuntimeError("ADMIN_PASSWORD must be set (env var). Set FLASK_DEBUG=1 for local development only.")
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY", "parlour-secret-change-me")
+app.secret_key = SECRET_KEY
 
 
 # ---------- Database helpers ----------
@@ -97,6 +115,49 @@ def init_db():
     conn.close()
 
 
+def validate_booking(d):
+    """Returns (errors: list, cleaned: dict) — rejects empty fields, bad dates/times and bad phone numbers."""
+    errors = []
+    name = (d.get("name") or "").strip()
+    phone = (d.get("phone") or "").strip()
+    phone_digits = "".join(ch for ch in phone if ch.isdigit())
+    email = (d.get("email") or "").strip()
+    service = (d.get("service") or "").strip()
+    bdate = (d.get("date") or "").strip()
+    btime = (d.get("time") or "").strip()
+    notes = (d.get("notes") or "").strip()
+
+    if not name:
+        errors.append("Please enter your name.")
+    if not (10 <= len(phone_digits) <= 15):
+        errors.append("Please enter a valid phone number (10–15 digits).")
+    if not service:
+        errors.append("Please choose a service.")
+    if email and "@" not in email:
+        errors.append("Please enter a valid email address.")
+    if bdate:
+        try:
+            parsed = datetime.strptime(bdate, "%Y-%m-%d")
+            if parsed.date() < date.today():
+                errors.append("Please pick a date that is not in the past.")
+        except ValueError:
+            errors.append("Please pick a valid date.")
+    else:
+        errors.append("Please pick a date.")
+    if btime:
+        try:
+            datetime.strptime(btime, "%H:%M")
+        except ValueError:
+            errors.append("Please pick a valid time.")
+    else:
+        errors.append("Please pick a time.")
+
+    return errors, {
+        "name": name, "phone": phone, "email": email, "service": service,
+        "date": bdate, "time": btime, "notes": notes,
+    }
+
+
 # ---------- Routes (pages) ----------
 @app.route("/")
 def home():
@@ -111,23 +172,24 @@ def home():
 @app.route("/book", methods=["GET", "POST"])
 def book():
     conn = get_db()
-    if request.method == "POST":
-        f = request.form
-        conn.execute(
-            "INSERT INTO bookings (name, phone, email, service, date, time, notes, created_at) VALUES (?,?,?,?,?,?,?,?)",
-            (f.get("name"), f.get("phone"), f.get("email"), f.get("service"),
-             f.get("date"), f.get("time"), f.get("notes", ""), datetime.now().isoformat()),
-        )
-        conn.commit()
-        conn.close()
-        flash("✅ Your booking request was received! We will call you to confirm.", "success")
-        return redirect(url_for("book"))
     services = conn.execute("SELECT name, price, duration FROM services ORDER BY category, name").fetchall()
+    if request.method == "POST":
+        errors, cleaned = validate_booking(request.form)
+        if errors:
+            for e in errors:
+                flash(e, "error")
+        else:
+            conn.execute(
+                "INSERT INTO bookings (name, phone, email, service, date, time, notes, created_at) VALUES (?,?,?,?,?,?,?,?)",
+                (cleaned["name"], cleaned["phone"], cleaned["email"], cleaned["service"],
+                 cleaned["date"], cleaned["time"], cleaned["notes"], datetime.now().isoformat()),
+            )
+            conn.commit()
+            conn.close()
+            flash("✅ Your booking request was received! We will call you to confirm.", "success")
+            return redirect(url_for("book"))
     conn.close()
     return render_template("book.html", services=services)
-
-
-# ---------- JSON API (dynamic frontend / mobile app ready) ----------
 @app.route("/api/services")
 def api_services():
     conn = get_db()
@@ -138,16 +200,23 @@ def api_services():
 
 @app.route("/api/bookings", methods=["GET", "POST"])
 def api_bookings():
-    conn = get_db()
     if request.method == "POST":
         d = request.get_json(force=True) if request.is_json else request.form
+        errors, cleaned = validate_booking(d)
+        if errors:
+            return jsonify({"errors": errors}), 400
+        conn = get_db()
         conn.execute(
             "INSERT INTO bookings (name, phone, email, service, date, time, notes, created_at) VALUES (?,?,?,?,?,?,?,?)",
-            (d.get("name"), d.get("phone"), d.get("email"), d.get("service"),
-             d.get("date"), d.get("time"), d.get("notes", ""), datetime.now().isoformat()),
+            (cleaned["name"], cleaned["phone"], cleaned["email"], cleaned["service"],
+             cleaned["date"], cleaned["time"], cleaned["notes"], datetime.now().isoformat()),
         )
         conn.commit()
+        conn.close()
         return jsonify({"message": "Booking created"}), 201
+    if not session.get("admin"):
+        return jsonify({"error": "Unauthorized"}), 401
+    conn = get_db()
     rows = [dict(r) for r in conn.execute("SELECT * FROM bookings ORDER BY created_at DESC")]
     conn.close()
     return jsonify(rows)
@@ -155,10 +224,46 @@ def api_bookings():
 
 @app.route("/api/bookings/<int:bid>/status", methods=["POST"])
 def api_booking_status(bid):
+    if not session.get("admin"):
+        return jsonify({"error": "Unauthorized"}), 401
+    status = request.form.get("status", "confirmed")
+    if status not in ("confirmed", "rejected", "done", "canceled"):
+        return jsonify({"error": "Invalid status"}), 400
     conn = get_db()
-    conn.execute("UPDATE bookings SET status=? WHERE id=?", (request.form.get("status", "confirmed"), bid))
+    conn.execute("UPDATE bookings SET status=? WHERE id=?", (status, bid,))
     conn.commit()
     conn.close()
+    return redirect(url_for("admin"))
+
+
+@app.route("/api/bookings/<int:bid>/delete", methods=["POST"])
+def delete_booking(bid):
+    """Permanently remove a booking (e.g. canceled/rejected ones) — admin only."""
+    if not session.get("admin"):
+        return jsonify({"error": "Unauthorized"}), 401
+    conn = get_db()
+    booking = conn.execute("SELECT name FROM bookings WHERE id=?", (bid,)).fetchone()
+    conn.execute("DELETE FROM bookings WHERE id=?", (bid,))
+    conn.commit()
+    conn.close()
+    if booking:
+        flash(f"🗑️ Booking #{bid} ({booking['name']}) was removed.", "success")
+    else:
+        flash(f"Booking #{bid} not found.", "error")
+    return redirect(url_for("admin"))
+
+
+@app.route("/admin/clear-canceled", methods=["POST"])
+def clear_canceled():
+    """Remove all canceled & rejected bookings in one click — admin only."""
+    if not session.get("admin"):
+        return redirect(url_for("admin"))
+    conn = get_db()
+    cur = conn.execute("DELETE FROM bookings WHERE status IN ('canceled','rejected')")
+    removed = cur.rowcount
+    conn.commit()
+    conn.close()
+    flash(f"🗑️ Removed {removed} canceled/rejected booking(s).", "success")
     return redirect(url_for("admin"))
 
 
@@ -202,7 +307,7 @@ def whatsapp_link(booking, kind="confirm"):
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
     if request.method == "POST":
-        if request.form.get("password") == os.environ.get("ADMIN_PASSWORD", "admin123"):
+        if request.form.get("password") == ADMIN_PASSWORD:
             session["admin"] = True
         else:
             flash("Wrong password", "error")
@@ -210,11 +315,14 @@ def admin():
         return render_template("admin_login.html")
     conn = get_db()
     bookings = conn.execute("SELECT * FROM bookings ORDER BY created_at DESC").fetchall()
+    counts = {row["status"]: row["c"] for row in conn.execute(
+        "SELECT status, COUNT(*) c FROM bookings GROUP BY status")}
     # Build a free WhatsApp click-to-chat link for each confirmed booking
     wa_links = {b["id"]: whatsapp_link(dict(b)) for b in bookings}
     wa_reject_links = {b["id"]: whatsapp_link(dict(b), kind="reject") for b in bookings}
     conn.close()
-    return render_template("admin.html", bookings=bookings, wa_links=wa_links, wa_reject_links=wa_reject_links)
+    return render_template("admin.html", bookings=bookings, counts=counts,
+                           wa_links=wa_links, wa_reject_links=wa_reject_links)
 
 
 @app.route("/logout")
@@ -227,4 +335,4 @@ init_db()
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=DEBUG)

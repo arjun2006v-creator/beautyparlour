@@ -9,3 +9,8 @@ venv/
 # Local database (Render uses a persistent disk instead)
 # Remove this line if you want to deploy with your current seed data
 parlour.db
+
+# Local dev server runtime artifacts
+server.pid
+server_out.log
+server_err.log

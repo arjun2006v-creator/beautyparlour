@@ -5,21 +5,25 @@ A dynamic, mobile-friendly fullstack application built with **Python (Flask)** a
 ## ✨ Features
 - Dynamic pages rendered from a database (services, gallery, testimonials)
 - Online appointment booking (form + JSON API)
-- Admin dashboard to view/confirm bookings (password protected)
+- Admin dashboard to view/confirm/cancel bookings and remove canceled appointments (password protected)
 - Beautiful background-image hero and card images
 - Fully responsive — works on mobile phones (hamburger menu, fluid grids)
 - REST APIs (`/api/services`, `/api/bookings`) ready for a future mobile app
 
-## 🚀 Run locally (free)
+## 🚀 Run locally(free)
 ```powershell
 cd "f:\web projects\beauty parlour"
 pip install -r requirements.txt
+# Local dev only — lets the app start with throwaway dev secrets (no env vars needed)
+$env:FLASK_DEBUG = "1"
 python app.py
 ```
 Open http://localhost:5000
 
+> Production must set `SECRET_KEY` and `ADMIN_PASSWORD` (copy `.env.example` → `.env` or use Render's env vars)** — the app refuses to start without them (fail-fast; never ship default secrets).
+
 - Booking page: `/book`
-- Admin dashboard: `/admin` (password: `admin123` — change via `ADMIN_PASSWORD` env var)
+- Admin dashboard: `/admin` (local dev: `arjun123`; production: set `ADMIN_PASSWORD` env var — see `.env.example`)
 - JSON API: `/api/services`, `/api/bookings`
 
 ## 🖼️ Images
