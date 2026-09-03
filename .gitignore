@@ -1,0 +1,11 @@
+# Secrets — never commit
+.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Local database (Render uses a persistent disk instead)
+# Remove this line if you want to deploy with your current seed data
+parlour.db

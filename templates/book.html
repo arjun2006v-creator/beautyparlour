@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Book Appointment – Glow & Grace{% endblock %}
+{% block content %}
+<section class="page-hero" style="background-image:url('{{ url_for('static', filename='img/booking-bg.jpg') }}')">
+  <h1>Book Your Appointment</h1>
+</section>
+
+<section class="section narrow">
+  <form method="post" class="form-card">
+    <label>Full Name *<input type="text" name="name" required placeholder="Your name"></label>
+    <label>Phone *<input type="tel" name="phone" required placeholder="+91 ..."></label>
+    <label>Email<input type="email" name="email" placeholder="you@example.com"></label>
+    <label>Service *
+      <select name="service" required>
+        <option value="" disabled selected>Choose a service…</option>
+        {% for s in services %}
+        <option value="{{ s['name'] }}">{{ s['name'] }} — ₹{{ '%.0f'|format(s['price']) }} ({{ s['duration'] }})</option>
+        {% endfor %}
+      </select>
+    </label>
+    <div class="row2">
+      <label>Date *<input type="date" name="date" required></label>
+      <label>Time *<input type="time" name="time" required></label>
+    </div>
+    <label>Notes<textarea name="notes" rows="3" placeholder="Anything we should know?"></textarea></label>
+    <button type="submit" class="btn btn-primary btn-lg">Confirm Booking</button>
+  </form>
+</section>
+{% endblock %}

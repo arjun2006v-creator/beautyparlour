@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Hero with background image -->
+<header id="home" class="hero">
+  <div class="hero-content">
+    <h1>Unleash Your <span class="highlight">Natural Glow</span></h1>
+    <p>Professional makeup, hair, skin &amp; nail care — book your pampering session online in seconds.</p>
+    <a href="{{ url_for('book') }}" class="btn btn-primary btn-lg">✨ Book Appointment</a>
+    <a href="#services" class="btn btn-outline btn-lg">View Services</a>
+  </div>
+</header>
+
+<!-- Services -->
+<section id="services" class="section">
+  <h2 class="section-title">Our Services</h2>
+  <p class="section-sub">Delivered by certified beauticians with premium products</p>
+  <div class="cards-grid">
+    {% for s in services %}
+    <article class="card service-card">
+      <div class="card-img" style="background-image:url('{{ url_for('static', filename='img/' + s['image']) }}')"></div>
+      <div class="card-body">
+        <span class="badge">{{ s['category'] }}</span>
+        <h3>{{ s['name'] }}</h3>
+        <p>{{ s['description'] }}</p>
+        <div class="card-foot">
+          <span class="price">₹{{ '%.0f'|format(s['price']) }}</span>
+          <span class="muted">⏱ {{ s['duration'] }}</span>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Gallery -->
+<section id="gallery" class="section section-alt">
+  <h2 class="section-title">Our Work</h2>
+  <div class="gallery-grid">
+    {% for g in gallery %}
+    <figure class="gallery-item" style="background-image:url('{{ url_for('static', filename='img/' + g['image']) }}')">
+      <figcaption>{{ g['title'] }}</figcaption>
+    </figure>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="testimonials" class="section">
+  <h2 class="section-title">Happy Clients</h2>
+  <div class="cards-grid">
+    {% for t in testimonials %}
+    <blockquote class="card quote-card">
+      <p>"{{ t['message'] }}"</p>
+      <footer><strong>{{ t['name'] }}</strong> <span class="stars">{{ '★' * t['rating'] }}</span></footer>
+    </blockquote>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

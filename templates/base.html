@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Glow & Grace Beauty Parlour{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="{{ url_for('home') }}" class="logo">🌸 Glow &amp; Grace</a>
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <label for="menu-toggle" class="burger">☰</label>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('home') }}#home">Home</a></li>
+      <li><a href="{{ url_for('home') }}#services">Services</a></li>
+      <li><a href="{{ url_for('home') }}#gallery">Gallery</a></li>
+      <li><a href="{{ url_for('home') }}#testimonials">Reviews</a></li>
+      <li><a href="{{ url_for('home') }}#contact">Contact</a></li>
+      <li><a href="{{ url_for('book') }}" class="btn btn-primary">Book Now</a></li>
+    </ul>
+  </nav>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flashes">
+        {% for cat, msg in messages %}<div class="flash flash-{{ cat }}">{{ msg }}</div>{% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+
+  <footer id="contact" class="footer">
+    <div class="footer-grid">
+      <div>
+        <h3>🌸 Glow &amp; Grace</h3>
+        <p>123 MG Road, Your City<br>📞 +91 98765 43210<br>✉️ hello@glowgrace.com</p>
+      </div>
+      <div>
+        <h3>Hours</h3>
+        <p>Mon–Sat: 9 AM – 8 PM<br>Sunday: 10 AM – 5 PM</p>
+      </div>
+      <div>
+        <h3>Quick Links</h3>
+        <p><a href="{{ url_for('book') }}">Book Appointment</a><br>
+           <a href="{{ url_for('home') }}#services">Our Services</a><br>
+           <a href="{{ url_for('admin') }}">Staff Login</a></p>
+      </div>
+    </div>
+    <p class="copyright">© 2025 Glow &amp; Grace Beauty Parlour. All rights reserved.</p>
+  </footer>
+</body>
+</html>
