@@ -20,7 +20,9 @@ python app.py
 ```
 Open http://localhost:5000
 
-> Production must set `SECRET_KEY` and `ADMIN_PASSWORD` (copy `.env.example` → `.env` or use Render's env vars)** — the app refuses to start without them (fail-fast; never ship default secrets).
+> ⚠️ **Security note:** For local dev you can run with `FLASK_DEBUG=1` (uses throwaway defaults). In production Render needs real `SECRET_KEY` + `ADMIN_PASSWORD` env vars set in **Dashboard → your service → Environment**. The app will boot even without them, but you should always set `SECRET_KEY` and your own `ADMIN_PASSWORD`.
+>
+> 🐛 **Deploy error `RuntimeError: SECRET_KEY must be set…`?** This means the env vars weren't applied. Fix: on Render, open **your service → Environment**, add `SECRET_KEY` (any long random string) and `ADMIN_PASSWORD`, click **Save**, then **Manual Deploy → Deploy latest commit**. (The `render.yaml` `envVars` section only takes effect when you create the service via **New + Blueprint** — a manually created Web Service ignores it.)
 
 - Booking page: `/book`
 - Admin dashboard: `/admin` (local dev: `arjun123`; production: set `ADMIN_PASSWORD` env var — see `.env.example`)

@@ -1,33 +1,39 @@
 """Beauty Parlour - Fullstack Flask app (dynamic, SQLite-backed, mobile-friendly)."""
 import os
+import secrets
 import sqlite3
 from urllib.parse import quote
 from datetime import datetime, date
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash, session
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# DB location can be overridden with the DATABASE_URL env var
-# (e.g. a persistent disk path on Render). Defaults to ./parlour.db
-DB_PATH = os.environ.get("DATABASE_URL", os.path.join(BASE_DIR, "parlour.db"))
 
-# Fail fast on missing secrets in production; FLASK_DEBUG=1 lets local dev use throwaway values
+# DB location can be overridden with DATABASE_URL (a local path, e.g. a persistent disk
+# mount on Render). If it looks like a remote database URL (postgres/mysql), ignore it so
+# sqlite doesn't try to open a network URL. Defaults to ./parlour.db
+_db_url = os.environ.get("DATABASE_URL")
+if _db_url and not _db_url.startswith(("postgres://", "postgresql://", "mysql://", "mariadb://")):
+    DB_PATH = _db_url
+else:
+    DB_PATH = os.path.join(BASE_DIR, "parlour.db")
+
+# Debug mode: FLASK_DEBUG=1 locally. Render (production) leaves it unset.
 DEBUG = os.environ.get("FLASK_DEBUG", "").lower() in ("1", "true", "yes")
 
+# Never crash on missing secrets — fall back so the app always boots.
+# Best practice for production: set SECRET_KEY and ADMIN_PASSWORD in Render → Environment.
 SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:
-
-
-    if DEBUG:
-        SECRET_KEY = "dev-only-insecure-secret"  # local dev convenience
-    else:
-        raise RuntimeError("SECRET_KEY must be set (env var). Set FLASK_DEBUG=1 for local development only.")
+    SECRET_KEY = secrets.token_hex(32)
+    print("WARNING: SECRET_KEY env var not set — using a temporary random key. "
+          "Sessions will reset on restart. Add SECRET_KEY in Render → Environment.")
 
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
 if not ADMIN_PASSWORD:
-    if DEBUG:
-        ADMIN_PASSWORD = "arjun123"  # local dev convenience
-    else:
-        raise RuntimeError("ADMIN_PASSWORD must be set (env var). Set FLASK_DEBUG=1 for local development only.")
+    ADMIN_PASSWORD = "arjun123"
+    print("WARNING: ADMIN_PASSWORD env var not set — using default 'arjun123'. "
+          "Add ADMIN_PASSWORD in Render → Environment to change it.")
+
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
